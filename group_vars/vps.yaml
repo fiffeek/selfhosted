@@ -5,4 +5,5 @@ stacks:
   # Another solution would be to merge the docker compose files into one (?).
   order:
     - dir: ingress
+    - dir: monitoring
     - dir: rss

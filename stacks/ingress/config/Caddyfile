@@ -36,3 +36,8 @@ rss.{$DOMAIN} {
     authorize with admin_policy
     reverse_proxy miniflux:8080
 }
+
+portainer.{$DOMAIN} {
+    authorize with admin_policy
+    reverse_proxy portainer:9000
+}

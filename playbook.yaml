@@ -91,6 +91,7 @@
       tags:
         - setup
         - stacks
+        - create
       copy:
         src: "{{ playbook_dir }}/stacks"
         dest: "{{ stacks.dest }}"
