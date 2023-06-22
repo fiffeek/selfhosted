@@ -28,6 +28,7 @@ services:
       start_period: 30s
     networks:
       - selfhost
+
 volumes:
   miniflux-db:
 
