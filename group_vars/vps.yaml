@@ -1,0 +1,8 @@
+stacks:
+  dest: "/root/"
+  # The ordering is required so rather than auto discover
+  # from folers, the services are defined explicitly one by one.
+  # Another solution would be to merge the docker compose files into one (?).
+  order:
+    - dir: ingress
+    - dir: rss

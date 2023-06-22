@@ -1,0 +1,38 @@
+{
+    order authenticate before respond
+    order authorize before reverse_proxy
+    
+    security {
+        oauth identity provider github {$GITHUB_CLIENT_ID} {$GITHUB_CLIENT_SECRET}
+
+        authentication portal selfhostportal {
+            enable identity provider github
+            cookie domain ${TOPLEVEL_DOMAIN}
+            crypto default token lifetime 3600
+            crypto key sign-verify {$JWT_SHARED_KEY}
+
+            transform user {
+                match realm github
+                exact match sub github.com/{$GITHUB_ALLOWED_USERNAME}
+                action add role authp/admin
+            }
+        }
+
+        authorization policy admin_policy {
+            set auth url https://auth.{$DOMAIN}
+            crypto key verify {$JWT_SHARED_KEY}
+            allow roles authp/admin
+            validate bearer header
+            inject headers with claims
+        }
+    }
+}
+
+auth.{$DOMAIN} {
+    authenticate with selfhostportal
+}
+
+rss.{$DOMAIN} {
+    authorize with admin_policy
+    reverse_proxy miniflux:8080
+}

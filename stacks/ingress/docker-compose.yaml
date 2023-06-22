@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  caddy:
+    build: ./images/caddy-security
+    restart: unless-stopped
+    env_file:
+      - ./config/vars.env
+      - ./secrets/caddy.env
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./config/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - selfhost
+
+volumes:
+  caddy_data:
+  caddy_config:
+
+networks:
+  selfhost:
+    external: true

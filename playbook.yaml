@@ -3,6 +3,8 @@
   tasks:
     - name: Install required system packages for docker
       become: true
+      tags:
+        - setup
       apt:
         pkg:
           - apt-transport-https
@@ -14,18 +16,24 @@
 
     - name: Add Docker GPG apt Key
       become: true
+      tags:
+        - setup
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
         state: present
 
     - name: Add Docker Repository
       become: true
+      tags:
+        - setup
       apt_repository:
         repo: deb https://download.docker.com/linux/ubuntu jammy stable
         state: present
 
     - name: Update apt and install docker-ce
       become: true
+      tags:
+        - setup
       apt:
         pkg:
           - docker-ce
@@ -34,3 +42,73 @@
           - docker-compose-plugin
         state: latest
         update_cache: true
+
+    - name: Increase SSH timeout
+      tags:
+        - setup
+      become: true
+      blockinfile:
+        path: "/etc/ssh/sshd_config"
+        block: |
+          ClientAliveInterval 1200
+          ClientAliveCountMax 3
+
+    - name: Restart ssh
+      tags:
+        - setup
+      become: true
+      service:
+        name: ssh
+        state: restarted
+
+    - name: Allow all access to tcp port 80
+      become: true
+      tags:
+        - setup
+      community.general.ufw:
+        rule: allow
+        port: "80"
+        proto: tcp
+
+    - name: Allow all access to tcp port 443
+      become: true
+      tags:
+        - setup
+      community.general.ufw:
+        rule: allow
+        port: "443"
+        proto: tcp
+
+    - name: Create stacks directory
+      tags:
+        - setup
+        - stacks
+      file:
+        state: directory
+        path: "{{ stacks.dest }}"
+
+    - name: Copy stacks to VPS
+      tags:
+        - setup
+        - stacks
+      copy:
+        src: "{{ playbook_dir }}/stacks"
+        dest: "{{ stacks.dest }}"
+        decrypt: true
+
+    - name: Create docker network
+      tags:
+        - stacks
+        - setup
+      shell:
+        cmd: "docker network create --driver bridge selfhost"
+      ignore_errors: true
+
+    - name: Start services
+      tags:
+        - stacks
+        - deploy
+      shell:
+        cmd: "docker compose -f docker-compose.yaml up --build -d --force-recreate"
+        chdir: "{{ stacks.dest }}/stacks/{{ item.dir }}"
+      loop: "{{ stacks.order }}"
