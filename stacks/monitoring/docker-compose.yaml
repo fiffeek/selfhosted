@@ -13,6 +13,19 @@ services:
     restart: unless-stopped
     networks:
       - selfhost
+  glances:
+    image: nicolargo/glances:latest
+    container_name: glances
+    restart: unless-stopped
+    pid: host
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - "GLANCES_OPT=-w"
+    networks:
+      - selfhost
 
 volumes:
   data:
