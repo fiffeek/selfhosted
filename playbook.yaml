@@ -92,6 +92,7 @@
         - setup
         - stacks
         - create
+        - deploy
       copy:
         src: "{{ playbook_dir }}/stacks"
         dest: "{{ stacks.dest }}"

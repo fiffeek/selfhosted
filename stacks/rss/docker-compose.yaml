@@ -9,9 +9,6 @@ services:
     env_file:
       - ./config/vars.env
       - ./secrets/miniflux.env
-    environment:
-      - RUN_MIGRATIONS=1
-      - CREATE_ADMIN=1
     networks:
       - selfhost
   db:
