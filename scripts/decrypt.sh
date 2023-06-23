@@ -1,3 +1,3 @@
 #!/bin/bash
 
-xargs -a ./scripts/data/encrypted_files ansible-vault decrypt --vault-id vault-secret.txt
+fd --regex secrets --type directory | xargs fd . | xargs ansible-vault decrypt --vault-id vault-secret.txt
