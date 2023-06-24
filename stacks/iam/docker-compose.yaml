@@ -1,0 +1,54 @@
+version: "3.9"
+
+services:
+  lldap:
+    container_name: lldap
+    image: nitnelave/lldap:stable
+    expose:
+      - 3890 # LDAP
+      - 17170 # Web UI
+    environment:
+      - LLDAP_JWT_SECRET_FILE=/secrets/JWT_SECRET
+      - LLDAP_LDAP_USER_PASS_FILE=/secrets/LDAP_USER_PASS
+    env_file:
+      - ./config/lldap.env
+      - ./secrets/lldap.env
+    volumes:
+      - ./config/lldap_config.toml:/data/lldap_config.toml
+      - ./secrets/LDAP_JWT_SECRET:/secrets/JWT_SECRET
+      - ./secrets/LDAP_USER_PASSWORD:/secrets/LDAP_USER_PASS
+    restart: unless-stopped
+    networks:
+      - selfhost
+
+  authelia:
+    container_name: authelia
+    hostname: authelia
+    image: authelia/authelia:4
+    restart: unless-stopped
+    networks:
+      - selfhost
+    expose:
+      - 9091
+    environment:
+      - AUTHELIA_JWT_SECRET_FILE=/secrets/JWT_SECRET
+      - AUTHELIA_SESSION_SECRET_FILE=/secrets/SESSION_SECRET
+      - AUTHELIA_STORAGE_ENCRYPTION_KEY_FILE=/secrets/STORAGE_ENCRYPTION_KEY
+      - AUTHELIA_AUTHENTICATION_BACKEND_LDAP_PASSWORD_FILE=/secrets/AUTHENTICATION_BACKEND_LDAP_PASSWORD
+    env_file:
+      - ./config/authelia.env
+      - ./secrets/authelia.env
+    volumes:
+      - ./secrets/AUTHELIA_JWT_SECRET:/secrets/JWT_SECRET
+      - ./secrets/AUTHELIA_SESSION_SECRET:/secrets/SESSION_SECRET
+      - ./secrets/AUTHELIA_STORAGE_ENCRYPTION_KEY:/secrets/STORAGE_ENCRYPTION_KEY
+      - ./secrets/LDAP_USER_PASSWORD:/secrets/AUTHENTICATION_BACKEND_LDAP_PASSWORD
+      - authelia_config:/config
+      - ./config/authelia.yaml:/config/configuration.yml
+
+volumes:
+  authelia_config:
+
+networks:
+  selfhost:
+    external: true

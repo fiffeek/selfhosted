@@ -4,6 +4,7 @@ stacks:
   # from folers, the services are defined explicitly one by one.
   # Another solution would be to merge the docker compose files into one (?).
   order:
+    - dir: iam
     - dir: ingress
     - dir: monitoring
     - dir: rss
