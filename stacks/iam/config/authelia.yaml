@@ -77,3 +77,15 @@ identity_providers:
           - profile
           - groups
           - email
+      - id: miniflux
+        description: Miniflux RSS
+        secret: "$pbkdf2-sha512$310000$gRQfIE0eWD7Ny47dsvkiTw$5G9F8vZtbIw40Nu2ljD2DSU8cZFfr8h.Mdxo09OogruCfWITyyfvGSHAYlq8yQeNPZPkEdtwR8SPyvR4JiyfQw"
+        public: false
+        authorization_policy: two_factor
+        redirect_uris:
+          - https://rss.home.filipmikina.com/oauth2/oidc/callback
+        scopes:
+          - openid
+          - profile
+          - groups
+          - email
