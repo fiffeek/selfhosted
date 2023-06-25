@@ -62,3 +62,18 @@ notifier:
   disable_startup_check: false
   filesystem:
     filename: /config/notification.txt
+identity_providers:
+  oidc:
+    clients:
+      - id: portainer
+        description: Portainer
+        secret: "$pbkdf2-sha512$310000$kpbPLLkc6UQ9hdbhsLK0Cw$47PbY1xIh/97DfpPxMT8GkfZWa3RLB2gvrnhBNRDZCtuOkCROX46jMnIQpPBVCwprmgc7rwJVmV944e/8CpYjw"
+        public: false
+        authorization_policy: two_factor
+        redirect_uris:
+          - https://portainer.home.filipmikina.com
+        scopes:
+          - openid
+          - profile
+          - groups
+          - email
