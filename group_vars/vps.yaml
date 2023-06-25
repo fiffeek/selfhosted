@@ -9,3 +9,4 @@ stacks:
     - dir: ingress
     - dir: monitoring
     - dir: rss
+    - dir: homepage
