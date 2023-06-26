@@ -34,3 +34,10 @@ glances.{$DOMAIN} {
   }
   reverse_proxy glances:61208
 }
+
+uptime.{$DOMAIN} {
+  forward_auth {$AUTHELIA_URL} {
+    import forward_proxy
+  }
+  reverse_proxy uptimekuma:3001
+}

@@ -26,9 +26,20 @@ services:
       - "GLANCES_OPT=-w -t 10"
     networks:
       - selfhost
+  uptime-kuma:
+    image: louislam/uptime-kuma
+    container_name: uptimekuma
+    restart: unless-stopped
+    volumes:
+      - uptime-kuma:/app/data
+    expose:
+      - 3001
+    networks:
+      - selfhost
 
 volumes:
   data:
+  uptime-kuma:
 
 networks:
   selfhost:

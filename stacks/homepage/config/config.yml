@@ -23,6 +23,11 @@ services:
   - name: "Monitoring"
     icon: "fas fa-chart-line"
     items:
+      - name: "Uptime"
+        subtitle: "Uptime monitor"
+        icon: "fas fa-heartbeat"
+        tag: "app"
+        url: "https://uptime.home.filipmikina.com"
       - name: "Glances"
         subtitle: "Quick metrics"
         icon: "fas fa-glasses"
