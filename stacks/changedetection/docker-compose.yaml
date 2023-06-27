@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+  playwright-chrome:
+    hostname: playwright-chrome
+    container_name: playwright-chrome
+    image: browserless/chrome
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 1500M
+    environment:
+      - SCREEN_WIDTH=1920
+      - SCREEN_HEIGHT=1024
+      - SCREEN_DEPTH=16
+      - ENABLE_DEBUGGER=false
+      - PREBOOT_CHROME=true
+      - CONNECTION_TIMEOUT=300000
+      - MAX_CONCURRENT_SESSIONS=10
+      - CHROME_REFRESH_TIME=600000
+      - DEFAULT_BLOCK_ADS=true
+      - DEFAULT_STEALTH=true
+    expose:
+      - 3000
+    networks:
+      - selfhost
+  changedetection:
+    image: ghcr.io/dgtlmoon/changedetection.io
+    container_name: changedetection
+    hostname: changedetection
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 250M
+    expose:
+      - 5000
+    volumes:
+      - changedetection-data:/datastore
+    environment:
+      - PLAYWRIGHT_DRIVER_URL=ws://playwright-chrome:3000/?stealth=1&--disable-web-security=true
+      - BASE_URL=https://changedetection.home.filipmikina.com
+    networks:
+      - selfhost
+
+volumes:
+  changedetection-data:
+
+networks:
+  selfhost:
+    external: true

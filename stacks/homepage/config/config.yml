@@ -2,7 +2,7 @@
 title: "VPS dashboard"
 subtitle: "Filip Mikina"
 
-header: true
+header: false
 footer: false
 
 columns: "3"
@@ -20,6 +20,13 @@ services:
         tag: "app"
         icon: "fas fa-rss"
         url: "https://rss.home.filipmikina.com"
+  - name: "Notifications"
+    icon: "fas fa-directions"
+    items:
+      - name: "Changedetection"
+        subtitle: "Notify on change"
+        icon: "fas fa-bell"
+        url: "https://changedetection.home.filipmikina.com"
   - name: "Monitoring"
     icon: "fas fa-chart-line"
     items:

@@ -10,3 +10,4 @@ stacks:
     - dir: monitoring
     - dir: rss
     - dir: homepage
+    - dir: changedetection
