@@ -42,6 +42,13 @@ uptime.{$DOMAIN} {
   reverse_proxy uptimekuma:3001
 }
 
+disk.{$DOMAIN} {
+  forward_auth {$AUTHELIA_URL} {
+    import forward_proxy
+  }
+  reverse_proxy doku:9090
+}
+
 changedetection.{$DOMAIN} {
   forward_auth {$AUTHELIA_URL} {
     import forward_proxy
