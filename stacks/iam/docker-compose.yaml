@@ -49,9 +49,11 @@ services:
       - ./secrets/AUTHELIA_ISSUER_PRIVATE_KEY:/secrets/ISSUER_PRIVATE_KEY
       - authelia_config:/config
       - ./config/authelia.yaml:/config/configuration.yml
+      - authelia_logs:/logs
 
 volumes:
   authelia_config:
+  authelia_logs:
 
 networks:
   selfhost:

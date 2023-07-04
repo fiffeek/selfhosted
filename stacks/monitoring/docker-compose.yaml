@@ -48,24 +48,30 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /:/hostroot:ro
   fail2ban:
-    image: lscr.io/linuxserver/fail2ban:latest
+    image: lscr.io/linuxserver/fail2ban:1.0.2
     container_name: fail2ban
     cap_add:
       - NET_ADMIN
       - NET_RAW
     network_mode: host
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=911
+      - PGID=911
       - TZ=Etc/UTC
+      - VERBOSITY=-vv
     volumes:
+      - ./config/fail2ban:/config/fail2ban
       - /etc/localtime:/etc/localtime:ro
       - /var/log:/var/log:ro
+      - authelia_logs:/remotelogs/authelia:ro
     restart: unless-stopped
 
 volumes:
   data:
   uptime-kuma:
+  authelia_logs:
+    external:
+      name: iam_authelia_logs
 
 networks:
   selfhost:

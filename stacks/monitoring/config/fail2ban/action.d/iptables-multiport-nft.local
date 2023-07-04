@@ -1,0 +1,21 @@
+# https://github.com/crazy-max/docker-fail2ban/issues/105
+# `iptables` links to `iptables-legacy` (no "nf_tables" backend)
+# for Alpine version of `fail2ban` LIS docker image, so using 
+# `iptables-nft` directly resolves the conclicting aliases (the host
+# uses Debian, where the link resolves to `iptables-nft`).
+
+[INCLUDES]
+
+before = iptables.conf
+
+[Definition]
+
+type = multiport
+
+[Init]
+
+iptables = iptables-nft <lockingopt>
+
+[Init?family=inet6]
+
+iptables = ip6tables-nft <lockingopt>

@@ -1,0 +1,23 @@
+[DEFAULT]
+ignoreip = 127.0.0.1/8 ::1
+           10.0.0.0/8
+           172.16.0.0/12
+           192.168.0.0/16
+banaction = iptables-multiport-nft
+bantime = 1h
+bantime.increment = true
+bantime.factor = 2
+bantime.maxtime = 5w
+findtime = 10m
+maxretry = 3
+
+
+[sshd]
+enabled = true
+chain   = INPUT
+action  = %(known/action)s
+
+[authelia-auth]
+enabled  = true
+chain = DOCKER-USER
+action  = %(known/action)s
