@@ -1,5 +1,15 @@
 ---
 - hosts: vps
+  roles:
+    - role: hifis.unattended_upgrades
+      unattended_automatic_reboot: true
+      unattended_automatic_reboot_time: "07:00"
+      unattended_remove_unused_dependencies: true
+      unattended_remove_new_unused_dependencies: true
+      become: true
+      tags:
+        - setup
+
   tasks:
     - name: Install required system packages for docker
       become: true
